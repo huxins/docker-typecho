@@ -28,7 +28,7 @@ services:
   #   - REDIS_PASS=**None**
 
   php:
-    image: hteen/php
+    image: hteen/php:release-v7.2.13
     volumes:
       - ./web:/www
       - ./php.ini:/usr/local/etc/php/php.ini
