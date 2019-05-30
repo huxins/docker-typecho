@@ -1,39 +1,52 @@
-mysql:
-  image: mysql
-  privileged: false
-  restart: always
-  ports:
-  - 3306:3306
-  volumes:
-  - ./mysql:/var/lib/mysql
-  environment:
-    - MYSQL_ROOT_PASSWORD=123456
-    - MYSQL_DATABASE=typecho
-    - MYSQL_USER=typecho
-    - MYSQL_PASSWORD=123456
-redis:
-  image: redis
-  privileged: false
-  restart: always
-  environment:
-  - REDIS_PASS=**None**
-php:
-  image: hteen/php
-  volumes:
-    - ./web:/www
-    - ./php.ini:/usr/local/etc/php/php.ini
-  links:
-    - mysql
-    - redis
-nginx:
-  image: nginx
-  volumes:
-    - ./nginx:/etc/nginx
-    - ./ssl:/etc/nginx/ssl
-  volumes_from:
-    - php
-  ports:
-    - 443:443
-    - 80:80
-  links:
-    - php
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.7.26
+    privileged: false
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+    - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=typecho
+      - MYSQL_USER=typecho
+      - MYSQL_PASSWORD=123456
+    networks:
+      - backend
+
+  # redis:
+  #   image: redis
+  #   privileged: false
+  #   restart: always
+  #   environment:
+  #   - REDIS_PASS=**None**
+
+  php:
+    image: hteen/php
+    volumes:
+      - ./web:/www
+      - ./php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - frontend
+      - backend
+
+  nginx:
+    image: nginx:1.16.0-alpine
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./ssl:/etc/nginx/ssl
+    volumes_from:
+      - php
+    ports:
+      - 443:443
+      - 80:80
+    networks:
+      - frontend
+
+networks:
+  frontend:
+  backend:
