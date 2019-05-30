@@ -39,8 +39,7 @@ services:
     volumes:
       - ./nginx:/etc/nginx
       - ./ssl:/etc/nginx/ssl
-    volumes_from:
-      - php
+      - ./web:/www
     ports:
       - 443:443
       - 80:80
