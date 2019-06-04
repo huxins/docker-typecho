@@ -12,6 +12,7 @@ RUN apk --update add --no-cache \
     tar \
     xz \
     openssl \
+    libcap \
     php7 \
     php7-fpm \
     php7-mbstring \
