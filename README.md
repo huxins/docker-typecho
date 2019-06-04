@@ -42,6 +42,10 @@ sudo docker-compose up -d
 - Dockerfile 修改自 [yobasystems/alpine-caddy](https://github.com/yobasystems/alpine-caddy)
 
 ```linux
-docker run -d --name examplecaddy -v /path/to/php/src:/srv -p 2015:2015 huxins/caddy:php
+docker run --name blog \
+  -v ~/app:/srv \
+  -p 2015:2015 huxins/caddy:php \
+  && chmod 777 ~/app/usr \
+  && chmod 777 ~/app
 ```
 
